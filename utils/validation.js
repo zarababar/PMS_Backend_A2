@@ -38,10 +38,6 @@ export const ProductValidation = [
         .notEmpty().withMessage('Category is required')
         .isString().withMessage('Category must be a string'),
 
-    // check('image')
-    //     // .isArray().withMessage('Format must be valid')
-    //     .notEmpty().withMessage('Images are required')
-
 ];
 
 // Validation rule for checking ObjectId parameters
