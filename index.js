@@ -4,11 +4,8 @@ import cookieParser from 'cookie-parser';
 
 import dotenv from 'dotenv';
 
-import User from './Model/User.js';
+import routes from './Routes/index.js';
 
-import userRouter from './Routes/user.js';
-import authRouter from './Routes/auth.js';
-import productRouter from './Routes/product.js';
 const app = express();
 
 dotenv.config(); //Loads .env file contents into process.env by default
@@ -16,9 +13,9 @@ const PORT = process.env.PORT;
 const MONGODB_URL = process.env.MONGODB_URL;
 
 app.use(express.json());
-app.use(express.urlencoded({extended:false})); //json parsing middleware
+app.use(express.urlencoded({ extended: false })); //json parsing middleware
 
-app.use(cookieParser());
+app.use('/', routes);
 
 mongoose.connect(MONGODB_URL)
     .then(result => {
@@ -27,6 +24,4 @@ mongoose.connect(MONGODB_URL)
     })
     .catch(err => { console.log('Database connection error:', err) });
 
-    app.use('/user', userRouter);
-    app.use('/', productRouter);
-    app.use('/auth', authRouter);
+

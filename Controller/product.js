@@ -82,13 +82,13 @@ export const deleteProduct = async (req, res, next) => {
 export const getUserProducts = async (req, res, next) => {
     try {
         const userId = req.params.userId; // Get product ID from the route parameter
-        
+
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'Invalid user ID' });
         }
         //Different user cannot get the products
-        await validateUserRight( req.user.id, userId);
-        
+        await validateUserRight(req.user.id, userId);
+
         const result = await getUserProductsService(userId); // Await the service call
 
         res.status(200).json({
@@ -117,8 +117,8 @@ export const getCategoryProducts = async (req, res, next) => {
 export const getProductsDetails = async (req, res, next) => {
     try {
         const productId = req.params.id;
-        
-        await  authorizeProductUpdate(productId, req.user.id);
+
+        await authorizeProductUpdate(productId, req.user.id);
         const result = await getProductsDetailsService(productId);
         res.status(200).json({
             data: result // Return the result
