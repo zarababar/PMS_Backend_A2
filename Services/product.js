@@ -42,9 +42,7 @@ export const updateProductService = async (id, productData, userId) => {
     if (!existingProduct) {
         throw new Error("Product not found");
     }
-    if (existingProduct.userId.toString() !== userId) {
-        return res.status(403).json({ message: 'Forbidden: You do not have permission to update this product.' });
-    }
+
     updateCategoryService(existingProduct, productData);
 
     const updatedProduct = await Product.findByIdAndUpdate(id, productData, { new: true });
@@ -53,7 +51,6 @@ export const updateProductService = async (id, productData, userId) => {
 
 export const deleteProductService = async (productId) => {
     const existingProduct = await Product.findById(productId);
-
     await deleteCategoryService(existingProduct, productId);
     await removeProductFromUser(existingProduct.userId, productId);
     return await Product.findByIdAndDelete(productId);

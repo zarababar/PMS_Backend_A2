@@ -12,13 +12,13 @@ router.post('/products', handleImages, isAuthenticated, ProductValidation, valid
 
 router.post('/products/category', isAuthenticated, createCategory);
 
-router.put('/products/:id',handleImages, isAuthenticated, ProductValidation, userIdValidation, categoryIdValidation, validation, updateProduct);
+router.put('/products/:id',handleImages, isAuthenticated, ProductValidation, validation, updateProduct);
 
 router.delete('/products/:id', isAuthenticated, idValidation, validation, deleteProduct)
 
-router.get('/products/user/:userId', isAuthenticated, userIdValidation, validation, getUserProducts);
+router.get('/products/user/:userId', isAuthenticated, getUserProducts);
 
-router.get('/products/category/:categoryId',isAuthenticated, categoryIdValidation, validation, getCategoryProducts);
+router.get('/products/category/:categoryId',isAuthenticated, getCategoryProducts);
 
 router.get('/products/:id', isAuthenticated, idValidation, validation, getProductsDetails);
 

@@ -1,6 +1,6 @@
 import { check, param, validationResult } from 'express-validator';
 import mongoose from 'mongoose';
-
+import Product from '../Model/product.js';
 export const SignupValidation = [
     check('email')
         .notEmpty().withMessage('Email is required')
@@ -51,11 +51,46 @@ export const idValidation = [
 ];
 
 export const userIdValidation = [
-    param('userId')
+    // param('userId')
+    //     .isMongoId().withMessage('Invalid user ID')
+        check('userId')
         .isMongoId().withMessage('Invalid user ID')
+
+    
 ];
 
 export const categoryIdValidation = [
     param('category')
         .isMongoId().withMessage('Invalid category ID')
 ];
+
+export const validateUserRightOnProduct = async (productId, userId) => {
+    const product = await Product.findById(productId);
+
+    if (!product) {
+        throw new Error('Product not found');
+    }
+    await validateUserRight(product.userId.toString() , userId);
+};
+export const validateUserRight=async(id, userId)=>{
+    if (id !== userId) {
+        throw new Error('Forbidden: You do not have permission to update this product.');
+    }
+}
+
+export const authorizeProductUpdate = async (productId, userLoggedIn) => {
+    try {
+        const productExist = await Product.findById(productId); // Check if the product exists
+        if (!productExist) {
+            throw new Error('Product not found'); // Handle case where the product does not exist
+        }
+
+        if (productExist.userId.toString() !== userLoggedIn) {
+            throw new Error('Forbidden: You do not have permission to update this product.'); // Throw error if user is not authorized
+        }
+
+    } catch (error) {
+        // Optionally log the error or handle it as needed
+        throw error; // Re-throw the error to be handled by the calling function
+    }
+};

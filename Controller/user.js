@@ -10,7 +10,6 @@ export const createUser = async (req, res) => {
             return res.status(400).json({ message: "User already exist" });
         }
         const result = await createUserService({ name, email, password });
-        // res.cookie("token", result.token);
         res.status(201).json({
             data: result // result will already be in DTO format
         });
